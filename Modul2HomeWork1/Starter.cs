@@ -32,7 +32,7 @@
                 }
             }
 
-            File.WriteAllText("log.txt", Logger.GetLogs());
+            File.WriteAllText("log.txt", Logger.GetLogsToString());
         }
     }
 }

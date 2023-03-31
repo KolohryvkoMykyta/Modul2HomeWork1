@@ -1,4 +1,5 @@
-﻿using Modul2HomeWork1.Enums;
+﻿using System.Text;
+using Modul2HomeWork1.Enums;
 
 namespace Modul2HomeWork1
 {
@@ -6,16 +7,23 @@ namespace Modul2HomeWork1
     {
         private const string LogFormat = "{0}: {1}: {2}";
 
-        public static Logger Instance { get; } = new Logger();
+        private Node _data;
 
-        private List<string> Logs { get; } = new List<string>();
+        public static Logger Instance { get; } = new Logger();
 
         public void Log(Log log)
         {
-            var textLog = string.Format(LogFormat, log.Timestamp, log.Type, log.Message);
+            Console.WriteLine(string.Format(LogFormat, log.Timestamp, log.Type, log.Message));
 
-            Console.WriteLine(textLog);
-            Logs.Add(textLog);
+            if (_data == null)
+            {
+                _data = new Node() { Log = log };
+            }
+            else
+            {
+                var temp = _data;
+                _data = new Node() { Log = log, Next = temp };
+            }
         }
 
         public void Log(LogType logType, string message)
@@ -23,16 +31,23 @@ namespace Modul2HomeWork1
             Log(new Log(logType, message));
         }
 
-        public string GetLogs()
+        public string GetLogsToString()
         {
-            string result = string.Empty;
+            var builder = new StringBuilder();
+            var current = _data;
 
-            foreach (string log in Logs)
+            while (current != null)
             {
-                result += $"{log}\n";
+                builder.AppendLine(string.Format(LogFormat, current.Log.Timestamp, current.Log.Type, current.Log.Message));
+                current = current.Next;
             }
 
-            return result;
+            return builder.ToString();
+        }
+
+        public string ConvertLogToString(Log log)
+        {
+            return string.Format(LogFormat, log.Timestamp, log.Type, log.Message);
         }
     }
 }
