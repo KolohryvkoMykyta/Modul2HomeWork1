@@ -1,4 +1,7 @@
-﻿namespace Modul2HomeWork1
+﻿using Modul2HomeWork1.Enums;
+using Modul2HomeWork1.Exceptions;
+
+namespace Modul2HomeWork1
 {
     public static class Starter
     {
@@ -11,28 +14,34 @@
             for (int i = 0; i < 100; i++)
             {
                 int methodNumber = random.Next(3);
-                Result result;
+                bool result;
 
-                switch (methodNumber)
+                try
                 {
-                    case 0:
-                        result = Actions.First();
-                        break;
-                    case 1:
-                        result = Actions.Second();
-                        break;
-                    default:
-                        result = Actions.Third();
-                        break;
+                    switch (methodNumber)
+                    {
+                        case 0:
+                            result = Actions.First();
+                            break;
+                        case 1:
+                            result = Actions.Second();
+                            break;
+                        default:
+                            result = Actions.Third();
+                            break;
+                    }
                 }
-
-                if (result.Status == false)
+                catch (BusinessException exception)
                 {
-                    Logger.Log(Enums.LogType.Error, $"Action failed by a reason: {result.Message}");
+                    Logger.Log(LogType.Warning, $"Action got thid custom Exception: {exception.Message}");
+                }
+                catch (Exception exception)
+                {
+                    Logger.Log(LogType.Error, $"Action failed by reason: {exception.Message}");
                 }
             }
 
-            File.WriteAllText("log.txt", Logger.GetLogsToString());
+            Logger.WriteLogsToFile();
         }
     }
 }

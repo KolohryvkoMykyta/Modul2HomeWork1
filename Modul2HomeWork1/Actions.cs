@@ -1,4 +1,5 @@
 ﻿using Modul2HomeWork1.Enums;
+using Modul2HomeWork1.Exceptions;
 
 namespace Modul2HomeWork1
 {
@@ -6,28 +7,21 @@ namespace Modul2HomeWork1
     {
         private static readonly Logger Logger = Logger.Instance;
 
-        public static Result First()
+        public static bool First()
         {
-            Result result = new Result(true, "Start method");
-            Logger.Log(LogType.Info, $"{result.Message}: {nameof(Actions.First)}");
+            Logger.Log(LogType.Info, $"Start method: {nameof(Actions.First)}");
 
-            return result;
+            return true;
         }
 
-        public static Result Second()
+        public static bool Second()
         {
-            Result result = new Result(true, "Skipped logic in method");
-            Logger.Log(LogType.Warning, $"{result.Message}: {nameof(Actions.Second)}");
-
-            return result;
+            throw new BusinessException("Skipped logic in method");
         }
 
-        public static Result Third()
+        public static bool Third()
         {
-            Result result = new Result(false, "I broke a logic");
-            Logger.Log(LogType.Error, $"{result.Message}: {nameof(Actions.Third)}");
-
-            return result;
+            throw new Exception("I broke a logic");
         }
     }
 }
