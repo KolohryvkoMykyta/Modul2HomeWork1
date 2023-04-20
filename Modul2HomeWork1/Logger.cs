@@ -31,6 +31,11 @@ namespace Modul2HomeWork1
             Log(new Log(logType, message));
         }
 
+        public void WriteLogsToFile()
+        {
+            FileService.WriteFile(GetLogsToString());
+        }
+
         public string GetLogsToString()
         {
             var builder = new StringBuilder();
